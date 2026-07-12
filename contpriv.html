@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Zona de Eri ❤</title>
+    <style>
+        /* ========================================================
+           ESTILOS GENERALES (Fondo oscuro estilo "Medianoche")
+           ======================================================== */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #e5e7eb;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-transform: none;
+            font-size: 36px;
+            letter-spacing: 1px;
+        }
+
+        /* ========================================================
+           CONTENEDOR DASHBOARD GRID (Asimétrico Avanzado)
+           ======================================================== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
+            max-width: 1300px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #111827;
+            border-top: 4px solid #7a0c22;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .top-banner {
+            grid-column: span 2;
+            text-align: center;
+            border-top: none;
+        }
+
+        .left-block {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .calendar-container {
+            grid-column: 2;
+            grid-row: span 3;
+        }
+
+        /* ========================================================
+           ESTILOS: MENSAJE DIARIO
+           ======================================================== */
+        .top-banner h2 {
+            color: #fca5a5;
+            margin-top: 0;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .top-banner p {
+            color: #f3f4f6;
+            font-size: 17px;
+            line-height: 1.6;
+            font-style: italic;
+            margin: 10px 0 0 0;
+        }
+
+        /* ========================================================
+           ESTILOS: BLOC DE NOTAS
+           ======================================================== */
+        .notepad-container h2 {
+            color: #e5e7eb;
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 130px;
+            background-color: #1f2937;
+            color: #ffffff;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        textarea:focus { border-color: #7a0c22; }
+
+        .notepad-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .notepad-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #saveBtn { background-color: #babcbf; color: #111827; }
+        #saveBtn:hover { background-color: #9ca3af; }
+        #clearBtn { background-color: #374151; color: #f3f4f6; }
+        #clearBtn:hover { background-color: #4b5563; }
+
+        .status-msg {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #fca5a5;
+            font-weight: bold;
+            text-align: center;
+            height: 16px;
+        }
+
+        /* ========================================================
+           ESTILOS: ALARMA DE TAREAS ⏰
+           ======================================================== */
+        .alarm-container h2, .timer-container h2 {
+            color: #e5e7eb;
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .alarm-inputs, .timer-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-picker {
+            background-color: #1f2937;
+            color: #ffffff;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 20px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            outline: none;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .alarm-reason {
+            width: 100%;
+            background-color: #1f2937;
+            color: #ffffff;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            text-align: center;
+        }
+
+        .alarm-reason:focus { border-color: #7a0c22; }
+
+        .alarm-buttons, .timer-buttons {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .alarm-buttons button, .timer-buttons button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary { background-color: #7a0c22; color: #ffffff; }
+        .btn-primary:hover { background-color: #96132e; }
+        
+        .btn-danger { 
+            background-color: #dc2626; 
+            color: #ffffff; 
+            display: none; 
+            animation: pulse 1s infinite alternate;
+        }
+
+        .alarm-status, .timer-status {
+            font-size: 13px;
+            color: #9ca3af;
+            text-align: center;
+            min-height: 18px;
+            font-weight: bold;
+        }
+        
+        .alarm-status.active, .timer-status.active { color: #fca5a5; }
+
+        /* ========================================================
+           ESTILOS: TEMPORIZADOR CASERO ⏱
+           ======================================================== */
+        .timer-selectors {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            color: #9ca3af;
+            font-weight: bold;
+        }
+
+        .timer-select {
+            background-color: #1f2937;
+            color: #ffffff;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* ========================================================
+           ESTILOS: CALENDARIO
+           ======================================================== */
+        .calendar-container h2 {
+            color: #e5e7eb;
+            font-size: 20px;
+            margin-top: 0;
+            text-align: center;
+        }
+        
+        .calendar-container .subtitle {
+            color: #9ca3af;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .year-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .month-box {
+            background-color: #1f2937;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #2d3748;
+        }
+
+        .month-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #fca5a5;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .weekdays-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 9px;
+            color: #6b7280;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .day-cell { padding: 4px 0; color: #9ca3af; border-radius: 3px; }
+        .day-cell.empty { background: transparent; }
+
+        .day-cell.special-event {
+            background-color: #4c0519;
+            color: #fecdd3;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #7a0c22;
+            transition: all 0.2s ease;
+        }
+
+        .day-cell.special-event:hover {
+            background-color: #7a0c22;
+            color: #ffffff;
+            transform: scale(1.2);
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); box-shadow: 0 0 0 rgba(220, 38, 38, 0.7); }
+            to { transform: scale(1.03); box-shadow: 0 0 15px rgba(220, 38, 38, 0.9); }
+        }
+
+        /* ========================================================
+           VENTANA FLOTANTE (MODAL)
+           ======================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-box {
+            background-color: #111827;
+            border: 2px solid #7a0c22;
+            padding: 25px; border-radius: 12px;
+            max-width: 450px; width: 90%;
+            position: relative; text-align: center;
+            transform: translateY(-20px); transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+
+        .close-btn {
+            position: absolute; top: 10px; right: 15px;
+            font-size: 24px; color: #9ca3af; cursor: pointer;
+        }
+
+        .close-btn:hover { color: #ffffff; }
+        .modal-box h3 { margin-top: 10px; color: #fca5a5; font-size: 22px; }
+        .modal-box p { color: #e5e7eb; font-size: 15px; line-height: 1.5; margin: 15px 0; }
+        
+        .modal-photos { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .modal-photos img {
+            width: 45%; min-width: 130px; max-height: 130px;
+            object-fit: cover; border-radius: 6px; border: 1px solid #374151;
+        }
+
+        /* ========================================================
+           ESTILOS DEL PIE DE PÁGINA (FOOTER)
+           ======================================================== */
+        footer {
+            margin-top: 50px;
+            width: 100%;
+            max-width: 1300px;
+            border-top: 1px solid #1f2937;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0 10px;
+        }
+
+        .footer-left {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .footer-left span {
+            color: #7a0c22;
+            font-weight: bold;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: #fca5a5;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 950px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .top-banner { grid-column: span 1; }
+            .calendar-container { grid-column: 1; grid-row: auto; }
+            .year-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-right {
+                justify-content: center;
+            }
+        }
+        @media (max-width: 600px) {
+            .year-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>La Web de Nena</h1>
+    
+    <div class="dashboard-grid">
+        
+        <!-- BLOQUE SUPERIOR: MENSAJE DIARIO -->
+        <div class="card top-banner">
+            <h2>Mensajito mensajitoso, mensaje de oso</h2>
+            <p id="dailyMessage">Y tu mensaje del día de hoy es...</p>
+        </div>
+
+        <!-- COLUMNA IZQUIERDA -->
+        <div class="left-block">
+            
+            <!-- Bloc de Notas -->
+            <div class="card notepad-container">
+                <h2>Apunta aquí lo que necesites</h2>
+                <textarea id="noteTextArea" placeholder="Escribe aquí tus notas, mi niña..."></textarea>
+                <div class="notepad-buttons">
+                    <button onclick="saveNote()" id="saveBtn">Guardar Nota</button>
+                    <button onclick="clearNote()" id="clearBtn">Borrar Todo</button>
+                </div>
+                <p id="notepadStatus" class="status-msg"></p>
+            </div>
+
+            <!-- MÓDULO ALARMA -->
+            <div class="card alarm-container">
+                <h2>Programate una alarma aquí</h2>
+                
+                <div class="alarm-inputs">
+                    <div id="alarmStatus" class="alarm-status"><i>Sin alarmas programadas.</i></div>
+                    <input type="time" id="alarmTime" class="time-picker">
+                    <input type="text" id="alarmReason" class="alarm-reason" placeholder="¿Qué toca hacer? (Ej: Ir al gimnasio)">
+                    <div class="alarm-buttons">
+                        <button onclick="setAlarm()" id="setAlarmBtn" class="btn-primary">Programar Alarma</button>
+                        <button onclick="stopAlarm()" id="stopAlarmBtn" class="btn-danger">¡Desactivar Alarma!</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÓDULO TEMPORIZADOR -->
+            <div class="card timer-container">
+                <h2>Cuenta tus minutos y segundos aquí</h2>
+                <div class="timer-inputs">
+                    <div id="timerStatus" class="timer-status"><I>Listo para contar.</I></div>
+                    <div class="timer-selectors" id="timerSelectorsBox">
+                        <select id="timerMin" class="timer-select"></select> Min
+                        <select id="timerSec" class="timer-select"></select> Seg
+                    </div>
+                    <div class="timer-buttons">
+                        <button onclick="startTimer()" id="startTimerBtn" class="btn-primary">Iniciar Cuenta</button>
+                        <button onclick="stopTimer()" id="stopTimerBtn" class="btn-danger">Detener Cuenta</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA: CALENDARIO ANUAL LARGO -->
+        <div class="card calendar-container">
+            <h2>Un calendario?</h2>
+            <p class="subtitle"><i>Los días interactivos con recuerdos ocultos están iluminados.</i></p>
+            <div class="year-grid" id="yearGrid"></div>
+        </div>
+
+    </div>
+
+    <!-- MODAL INTEGRADO COMPARTIDO (Para Recuerdos, Alarma y Temporizador) -->
+    <div class="modal-overlay" id="customModal" onclick="closeModalShared()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModalShared()">&times;</span>
+            <h3 id="modalTitle">Título</h3>
+            <p id="modalText">Mensaje...</p>
+            <div class="modal-photos" id="modalPhotos"></div>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA OFICIAL -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                &copy; Todos los derechos reservados. Página realizada por Ángel Márquez García, 2026.
+            </div>
+            <div class="footer-right">
+                <a href="https://www.instagram.com/zaaffy_" target="_blank" class="footer-link">Instagram</a>
+                <a href="mailto:accutangel@gmail.com" class="footer-link">Soporte Técnico</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================
+       LÓGICA JAVASCRIPT
+       ======================================================== -->
+    <script>
+        const mensajes = [
+            "Ola mi nenita. Recuerda que tu boisfriends te quiere muchisimo. Nunca lo olvides, y yo más (siempre)",
+            "Hoy he pensado muchisimo en ti, espero que tu también pienses en mi aunque sea un poquito. Teamooo",
+            "Ojalá nuestros ojitos vuelvan a juntarse como síclopes pronto. Intuyo que estás leyendo esto porque aun no lo estamos... Ojala que pronto miamol.",
+            "Ola mi niña. Recuerda también que siempre siempre siempre voy a estar muy orgulloso de ti. Siempre lo estará. Estaré siempre en tus buenas y en tus malas, porque para eso estoy. Para apoyarnos día tras día. Te amo cieloo.",
+            "Se que puedes amor. Aunque parezca difícil, pero puedes. Tienes un corazón de oro y enorme, y un alma tan pura y honesta que nada te va a detener. Te adoro con toda mi alma corazón míiooo.",
+            "Ola, soy tu mayor fan, el namber uan. Y tu admirador secreto secretoso... uy coño, me pillaron. Mielda...",
+            "Sabías que en nuestro aniversario, el 18 de Agosto, pasaron las siguientes cosas: el asesinato del poeta Federico García Lorca en 1936, la firma del Tratado de San Ildefonso en 1796, y el descubrimiento del helio en 1868. Lo del helio capaz te la suda, pero creo que Lorca no tanto.. 👀"
+        ];
+
+        function mostrarMensajeDiario() {
+            const hoy = new Date();
+            const numeroDia = hoy.getDate();
+            const indiceMensaje = numeroDia % mensajes.length;
+            document.getElementById('dailyMessage').innerText = mensajes[indiceMensaje];
+        }
+
+        // CONTROL DEL BLOC DE NOTAS
+        const notepad = document.getElementById('noteTextArea');
+        const statusMsg = document.getElementById('notepadStatus');
+
+        function loadNote() {
+            const savedNote = localStorage.getItem('erika_nota');
+            if (savedNote) notepad.value = savedNote;
+        }
+
+        function saveNote() {
+            const texto = notepad.value;
+            localStorage.setItem('erika_nota', texto);
+            if (texto.trim() !== "") {
+                const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
+                const enlace = document.createElement('a');
+                enlace.href = URL.createObjectURL(blob);
+                enlace.download = 'nota_de_erika.txt';
+                enlace.click();
+                URL.revokeObjectURL(enlace.href);
+                statusMsg.innerText = "¡Nota guardada y descargada! ❤️";
+            } else {
+                statusMsg.innerText = "¡Nota guardada en el navegador!";
+            }
+            setTimeout(() => { statusMsg.innerText = ""; }, 3000);
+        }
+
+        function clearNote() {
+            if (confirm("¿Seguro que quieres borrar toda la nota, mi niña?")) {
+                notepad.value = "";
+                localStorage.removeItem('erika_nota');
+                statusMsg.innerText = "Nota eliminada.";
+                setTimeout(() => { statusMsg.innerText = ""; }, 3000);
+            }
+        }
+
+        // AUDIO COMPARTIDO PARA ALERTAS DIGITALES
+        let audioCtxShared = null;
+        let audioIntervalShared = null;
+
+        function playAlertSound() {
+            if (audioIntervalShared) clearInterval(audioIntervalShared);
+            audioCtxShared = new (window.AudioContext || window.webkitAudioContext)();
+            audioIntervalShared = setInterval(() => {
+                if (!audioCtxShared) return;
+                let osc = audioCtxShared.createOscillator();
+                let gain = audioCtxShared.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtxShared.currentTime);
+                gain.gain.setValueAtTime(0.3, audioCtxShared.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtxShared.destination);
+                osc.start();
+                osc.stop(audioCtxShared.currentTime + 0.15);
+            }, 500);
+        }
+
+        function stopAlertSound() {
+            if (audioIntervalShared) clearInterval(audioIntervalShared);
+            if (audioCtxShared) {
+                audioCtxShared.close();
+                audioCtxShared = null;
+            }
+        }
+
+        // ========================================================
+        // SISTEMA DE LA ALARMA
+        // ========================================================
+        let alarmTimeout = null;
+        const timeInput = document.getElementById('alarmTime');
+        const ahora = new Date();
+        timeInput.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+
+        function setAlarm() {
+            if (alarmTimeout) clearTimeout(alarmTimeout);
+            const timeValue = timeInput.value;
+            if (!timeValue) return;
+
+            const hoy = new Date();
+            const [horas, minutos] = timeValue.split(':');
+            const targetTime = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), horas, minutes, 0);
+
+            if (targetTime <= hoy) targetTime.setDate(targetTime.getDate() + 1);
+
+            const status = document.getElementById('alarmStatus');
+            status.className = "alarm-status active";
+            status.innerText = `🔔 Activa para las ${timeValue}`;
+
+            alarmTimeout = setTimeout(() => {
+                triggerAlarm();
+            }, targetTime - hoy);
+        }
+
+        function triggerAlarm() {
+            const reason = document.getElementById('alarmReason').value || "Terminó tu tiempo, mi niña";
+            document.getElementById('alarmStatus').innerText = `🚨 ¡ALARMA SONANDO!`;
+            document.getElementById('setAlarmBtn').style.display = 'none';
+            document.getElementById('stopAlarmBtn').style.display = 'block';
+
+            playAlertSound();
+
+            document.getElementById('modalTitle').innerText = "⏰ ¡Alarma de Eri!";
+            document.getElementById('modalText').innerText = `Misión: ${reason}\n\n¡Tu chico te avisa de que ha acabado el tiempo! ❤`;
+            document.getElementById('modalPhotos').innerHTML = "";
+            document.getElementById('customModal').classList.add('active');
+        }
+
+        function stopAlarm() {
+            stopAlertSound();
+            document.getElementById('setAlarmBtn').style.display = 'block';
+            document.getElementById('stopAlarmBtn').style.display = 'none';
+            const status = document.getElementById('alarmStatus');
+            status.className = "alarm-status";
+            status.innerText = "Sin alarmas programadas.";
+            if (alarmTimeout) clearTimeout(alarmTimeout);
+        }
+
+        // ========================================================
+        // SISTEMA DEL TEMPORIZADOR REGRESIVO 
+        // ========================================================
+        let timerCountdownInterval = null;
+        let totalSecondsRemaining = 0;
+
+        const minSelect = document.getElementById('timerMin');
+        const secSelect = document.getElementById('timerSec');
+        for (let i = 0; i < 60; i++) {
+            let optMin = document.createElement('option');
+            optMin.value = i; optMin.innerText = String(i).padStart(2, '0');
+            minSelect.appendChild(optMin);
+
+            let optSec = document.createElement('option');
+            optSec.value = i; optSec.innerText = String(i).padStart(2, '0');
+            secSelect.appendChild(optSec);
+        }
+        minSelect.value = 5;
+
+        function startTimer() {
+            if (timerCountdownInterval) clearInterval(timerCountdownInterval);
+
+            const mins = parseInt(minSelect.value) || 0;
+            const secs = parseInt(secSelect.value) || 0;
+            totalSecondsRemaining = (mins * 60) + secs;
+
+            if (totalSecondsRemaining <= 0) {
+                alert("Por favor mi niña, añade un tiempo mayor a 0.");
+                return;
+            }
+
+            document.getElementById('timerSelectorsBox').style.display = 'none';
+            document.getElementById('startTimerBtn').style.display = 'none';
+            document.getElementById('stopTimerBtn').style.display = 'block';
+            
+            const status = document.getElementById('timerStatus');
+            status.className = "timer-status active";
+
+            updateTimerDisplay();
+
+            timerCountdownInterval = setInterval(() => {
+                totalSecondsRemaining--;
+                if (totalSecondsRemaining <= 0) {
+                    clearInterval(timerCountdownInterval);
+                    triggerTimerEnd();
+                } else {
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(totalSecondsRemaining / 60);
+            const s = totalSecondsRemaining % 60;
+            document.getElementById('timerStatus').innerText = `⏳ Quedan: ${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function triggerTimerEnd() {
+            document.getElementById('timerStatus').innerText = `🚨 ¡TIEMPO TERMINADO!`;
+            playAlertSound();
+
+            document.getElementById('modalTitle').innerText = "⏱ ¡Temporizador Completado!";
+            document.getElementById('modalText').innerText = "¡Tu cuenta atrás ha llegado a cero, mi niña! Tiempo finalizado. ❤";
+            document.getElementById('modalPhotos').innerHTML = "";
+            document.getElementById('customModal').classList.add('active');
+        }
+
+        function stopTimer() {
+            clearInterval(timerCountdownInterval);
+            stopAlertSound();
+            
+            document.getElementById('timerSelectorsBox').style.display = 'flex';
+            document.getElementById('startTimerBtn').style.display = 'block';
+            document.getElementById('stopTimerBtn').style.display = 'none';
+            
+            const status = document.getElementById('timerStatus');
+            status.className = "timer-status";
+            status.innerText = "Listo para contar.";
+        }
+
+        function closeModalShared() {
+            document.getElementById('customModal').classList.remove('active');
+            if (document.getElementById('stopAlarmBtn').style.display === 'block') stopAlarm();
+            if (document.getElementById('stopTimerBtn').style.display === 'block' && totalSecondsRemaining <= 0) stopTimer();
+        }
+
+        // ========================================================
+        // BASE DE DATOS DE DÍAS INTERACTIVOS Y CALENDARIO
+        // ========================================================
+        const contenidoDias = {
+            "2-14": { // 14 de Febrero (San Valentín)
+                titulo: "Feliz San Valentín, mi amor 💘",
+                texto: "Espero que este día esté lleno de amor y alegría para ti, mi niña preciosa.",
+                fotos: ["https://via.placeholder.com/150"]
+            },
+            "6-17": { // 17 de Julio (Cumple de tu enamorado)
+                titulo: "Cumple de Ángel! 🎉",
+                texto: "Ese día fue el cumpleaños de tu niño, y como el año pasado, nunca se me olvidará tu sonrisa y la forma en la que me mirabas mientras soplaba las velas al lao de mi abuela.",
+                fotos: ["https://via.placeholder.com/150"]
+            },
+            "6-18": {
+                titulo: "Nuestro Mesiversario",
+                texto: "Este día es especial porque fue el que cumplimos 11 meses juntos. Ya queda poquiiiito poquito para el año",
+                fotos: ["https://via.placeholder.com/150"]
+            },
+            "6-20": {
+                titulo: "FELIZ CUMPLEAÑOS NENAAAAAAA",
+                texto: "Espero que hayas disfrutado con la página web :)",
+                fotos: ["https://via.placeholder.com/150"]
+            }, // <-- Aquí iba una coma normal, no una llave de cierre sola
+            "7-1": { // 1 de Agosto (Agosto es mes 7)
+                titulo: "El día que empezó todo 💖",
+                texto: "Aquí pones el mensaje de cómo os conocisteis...",
+                fotos: ["https://via.placeholder.com/150"]
+            },
+            "7-18": { // 18 de Agosto (Vuestro aniversario)
+                titulo: "¡Feliz Aniversario, mi vida! 👑",
+                texto: "Ola mi niña, hoy hacemos otro mesecito o año más juntos y quería decirte que...",
+                fotos: ["https://via.placeholder.com/150"]
+            } // <-- El último elemento NO lleva coma al final
+            
+        };
+
+        function generarCalendarioReal() {
+            const yearGrid = document.getElementById('yearGrid');
+            const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            const letrasSemana = ["L", "M", "X", "J", "V", "S", "D"];
+            const anio = 2026;
+
+            for (let mes = 0; mes < 8; mes++) {
+                const monthBox = document.createElement('div');
+                monthBox.className = 'month-box';
+
+                const monthName = document.createElement('div');
+                monthName.className = 'month-name';
+                monthName.innerText = nombresMeses[mes];
+                monthBox.appendChild(monthName);
+
+                const weekdaysHeader = document.createElement('div');
+                weekdaysHeader.className = 'weekdays-header';
+                letrasSemana.forEach(l => {
+                    const d = document.createElement('div');
+                    d.innerText = l;
+                    weekdaysHeader.appendChild(d);
+                });
+                monthBox.appendChild(weekdaysHeader);
+
+                const daysGrid = document.createElement('div');
+                daysGrid.className = 'days-grid';
+
+                let primerDiaSemana = new Date(anio, mes, 1).getDay();
+                primerDiaSemana = primerDiaSemana === 0 ? 6 : primerDiaSemana - 1;
+                const totalDias = new Date(anio, mes + 1, 0).getDate();
+
+                for (let e = 0; e < primerDiaSemana; e++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.className = 'day-cell empty';
+                    daysGrid.appendChild(emptyCell);
+                }
+
+                for (let dia = 1; dia <= totalDias; dia++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'day-cell';
+                    dayCell.innerText = dia;
+
+                    const claveDia = `${mes}-${dia}`;
+                    if (contenidoDias[claveDia]) {
+                        dayCell.classList.add('special-event');
+                        dayCell.onclick = () => openModalCalendar(claveDia);
+                    }
+                    daysGrid.appendChild(dayCell);
+                }
+                monthBox.appendChild(daysGrid);
+                yearGrid.appendChild(monthBox);
+            }
+        }
+
+        function openModalCalendar(claveDia) {
+            const datos = contenidoDias[claveDia];
+            document.getElementById('modalTitle').innerText = datos.titulo;
+            document.getElementById('modalText').innerText = datos.texto;
+            const phtContainer = document.getElementById('modalPhotos');
+            phtContainer.innerHTML = "";
+            datos.fotos.forEach(rutaFoto => {
+                const img = document.createElement('img');
+                img.src = rutaFoto;
+                phtContainer.appendChild(img);
+            });
+            document.getElementById('customModal').classList.add('active');
+        }
+
+        // Inicialización
+        mostrarMensajeDiario();
+        loadNote();
+        generarCalendarioReal();
+    </script>
+</body>
+</html>
