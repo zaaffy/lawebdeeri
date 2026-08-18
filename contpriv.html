@@ -24,7 +24,7 @@
             margin-top: 20px;
             margin-bottom: 25px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            text-transform: none;
+            text-transform: none; /* Mantiene mayúsculas y minúsculas tal cual las escribas */
             font-size: 36px;
             letter-spacing: 1px;
         }
@@ -255,82 +255,6 @@
             cursor: pointer;
         }
 
-        /* ========================================================
-           ESTILOS: CALENDARIO
-           ======================================================== */
-        .calendar-container h2 {
-            color: #e5e7eb;
-            font-size: 20px;
-            margin-top: 0;
-            text-align: center;
-        }
-        
-        .calendar-container .subtitle {
-            color: #9ca3af;
-            font-size: 13px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .year-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .month-box {
-            background-color: #1f2937;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #2d3748;
-        }
-
-        .month-name {
-            font-size: 12px;
-            font-weight: bold;
-            color: #fca5a5;
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .weekdays-header {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            text-align: center;
-            font-size: 9px;
-            color: #6b7280;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .days-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-            text-align: center;
-            font-size: 10px;
-        }
-
-        .day-cell { padding: 4px 0; color: #9ca3af; border-radius: 3px; }
-        .day-cell.empty { background: transparent; }
-
-        .day-cell.special-event {
-            background-color: #4c0519;
-            color: #fecdd3;
-            font-weight: bold;
-            cursor: pointer;
-            border: 1px solid #7a0c22;
-            transition: all 0.2s ease;
-        }
-
-        .day-cell.special-event:hover {
-            background-color: #7a0c22;
-            color: #ffffff;
-            transform: scale(1.2);
-            z-index: 10;
-        }
-
         @keyframes pulse {
             from { transform: scale(1); box-shadow: 0 0 0 rgba(220, 38, 38, 0.7); }
             to { transform: scale(1.03); box-shadow: 0 0 15px rgba(220, 38, 38, 0.9); }
@@ -404,11 +328,6 @@
             color: #6b7280;
         }
 
-        .footer-left span {
-            color: #7a0c22;
-            font-weight: bold;
-        }
-
         .footer-right {
             display: flex;
             gap: 20px;
@@ -430,7 +349,6 @@
             .dashboard-grid { grid-template-columns: 1fr; }
             .top-banner { grid-column: span 1; }
             .calendar-container { grid-column: 1; grid-row: auto; }
-            .year-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
             .footer-content {
@@ -441,14 +359,11 @@
                 justify-content: center;
             }
         }
-        @media (max-width: 600px) {
-            .year-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
-    <h1>La Web de Nena</h1>
+    <h1>erizona</h1>
     
     <div class="dashboard-grid">
         
@@ -491,7 +406,7 @@
             <div class="card timer-container">
                 <h2>Cuenta tus minutos y segundos aquí</h2>
                 <div class="timer-inputs">
-                    <div id="timerStatus" class="timer-status"><I>Listo para contar.</I></div>
+                    <div id="timerStatus" class="timer-status"><i>Listo para contar.</i></div>
                     <div class="timer-selectors" id="timerSelectorsBox">
                         <select id="timerMin" class="timer-select"></select> Min
                         <select id="timerSec" class="timer-select"></select> Seg
@@ -505,16 +420,18 @@
 
         </div>
 
-        <!-- COLUMNA DERECHA: CALENDARIO ANUAL LARGO -->
-        <div class="card calendar-container">
-            <h2>Un calendario?</h2>
-            <p class="subtitle"><i>Los días interactivos con recuerdos ocultos están iluminados.</i></p>
-            <div class="year-grid" id="yearGrid"></div>
+        <!-- COLUMNA DERECHA: CALENDARIO EN PROCESO -->
+        <div class="card calendar-container" style="text-align: center; padding: 40px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <p style="color: #9ca3af; font-size: 15px; margin-top: 15px; line-height: 1.6;">
+                Zona aun en construcción.
+                
+            </p>
+            <div style="font-size: 23px; margin-top: 25px;">Contactar al soporte técnico si cree que se trata de algún error.</div>
         </div>
 
     </div>
 
-    <!-- MODAL INTEGRADO COMPARTIDO (Para Recuerdos, Alarma y Temporizador) -->
+    <!-- MODAL INTEGRADO COMPARTIDO -->
     <div class="modal-overlay" id="customModal" onclick="closeModalShared()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <span class="close-btn" onclick="closeModalShared()">&times;</span>
@@ -637,7 +554,7 @@
 
             const hoy = new Date();
             const [horas, minutos] = timeValue.split(':');
-            const targetTime = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), horas, minutes, 0);
+            const targetTime = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), horas, minutos, 0);
 
             if (targetTime <= hoy) targetTime.setDate(targetTime.getDate() + 1);
 
@@ -760,115 +677,9 @@
             if (document.getElementById('stopTimerBtn').style.display === 'block' && totalSecondsRemaining <= 0) stopTimer();
         }
 
-        // ========================================================
-        // BASE DE DATOS DE DÍAS INTERACTIVOS Y CALENDARIO
-        // ========================================================
-        const contenidoDias = {
-            "2-14": { // 14 de Febrero (San Valentín)
-                titulo: "Feliz San Valentín, mi amor 💘",
-                texto: "Espero que este día esté lleno de amor y alegría para ti, mi niña preciosa.",
-                fotos: ["https://via.placeholder.com/150"]
-            },
-            "6-17": { // 17 de Julio (Cumple de tu enamorado)
-                titulo: "Cumple de Ángel! 🎉",
-                texto: "Ese día fue el cumpleaños de tu niño, y como el año pasado, nunca se me olvidará tu sonrisa y la forma en la que me mirabas mientras soplaba las velas al lao de mi abuela.",
-                fotos: ["https://via.placeholder.com/150"]
-            },
-            "6-18": {
-                titulo: "Nuestro Mesiversario",
-                texto: "Este día es especial porque fue el que cumplimos 11 meses juntos. Ya queda poquiiiito poquito para el año",
-                fotos: ["https://via.placeholder.com/150"]
-            },
-            "6-20": {
-                titulo: "FELIZ CUMPLEAÑOS NENAAAAAAA",
-                texto: "Espero que hayas disfrutado con la página web :)",
-                fotos: ["https://via.placeholder.com/150"]
-            }, // <-- Aquí iba una coma normal, no una llave de cierre sola
-            "7-1": { // 1 de Agosto (Agosto es mes 7)
-                titulo: "El día que empezó todo 💖",
-                texto: "Aquí pones el mensaje de cómo os conocisteis...",
-                fotos: ["https://via.placeholder.com/150"]
-            },
-            "7-18": { // 18 de Agosto (Vuestro aniversario)
-                titulo: "¡Feliz Aniversario, mi vida! 👑",
-                texto: "Ola mi niña, hoy hacemos otro mesecito o año más juntos y quería decirte que...",
-                fotos: ["https://via.placeholder.com/150"]
-            } // <-- El último elemento NO lleva coma al final
-            
-        };
-
-        function generarCalendarioReal() {
-            const yearGrid = document.getElementById('yearGrid');
-            const nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-            const letrasSemana = ["L", "M", "X", "J", "V", "S", "D"];
-            const anio = 2026;
-
-            for (let mes = 0; mes < 8; mes++) {
-                const monthBox = document.createElement('div');
-                monthBox.className = 'month-box';
-
-                const monthName = document.createElement('div');
-                monthName.className = 'month-name';
-                monthName.innerText = nombresMeses[mes];
-                monthBox.appendChild(monthName);
-
-                const weekdaysHeader = document.createElement('div');
-                weekdaysHeader.className = 'weekdays-header';
-                letrasSemana.forEach(l => {
-                    const d = document.createElement('div');
-                    d.innerText = l;
-                    weekdaysHeader.appendChild(d);
-                });
-                monthBox.appendChild(weekdaysHeader);
-
-                const daysGrid = document.createElement('div');
-                daysGrid.className = 'days-grid';
-
-                let primerDiaSemana = new Date(anio, mes, 1).getDay();
-                primerDiaSemana = primerDiaSemana === 0 ? 6 : primerDiaSemana - 1;
-                const totalDias = new Date(anio, mes + 1, 0).getDate();
-
-                for (let e = 0; e < primerDiaSemana; e++) {
-                    const emptyCell = document.createElement('div');
-                    emptyCell.className = 'day-cell empty';
-                    daysGrid.appendChild(emptyCell);
-                }
-
-                for (let dia = 1; dia <= totalDias; dia++) {
-                    const dayCell = document.createElement('div');
-                    dayCell.className = 'day-cell';
-                    dayCell.innerText = dia;
-
-                    const claveDia = `${mes}-${dia}`;
-                    if (contenidoDias[claveDia]) {
-                        dayCell.classList.add('special-event');
-                        dayCell.onclick = () => openModalCalendar(claveDia);
-                    }
-                    daysGrid.appendChild(dayCell);
-                }
-                monthBox.appendChild(daysGrid);
-                yearGrid.appendChild(monthBox);
-            }
-        }
-
-        function openModalCalendar(claveDia) {
-            const datos = contenidoDias[claveDia];
-            document.getElementById('modalTitle').innerText = datos.titulo;
-            document.getElementById('modalText').innerText = datos.texto;
-            const phtContainer = document.getElementById('modalPhotos');
-            phtContainer.innerHTML = "";
-            datos.fotos.forEach(rutaFoto => {
-                const img = document.createElement('img');
-                img.src = rutaFoto;
-                phtContainer.appendChild(img);
-            });
-            document.getElementById('customModal').classList.add('active');
-        }
-
-        // Inicialización
+        // Inicialización de funciones principales
         mostrarMensajeDiario();
         loadNote();
-        generarCalendarioReal();
     </script>
 </body>
 </html>
